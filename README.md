@@ -13,15 +13,18 @@ This package contains two nodes:
 
 To build the package, follow these steps:
 
-0. Install a few dependencies
+0. Install a few dependencies and clone the repository
 ```
 apt install cppcheck
+git clone https://github.com/1412kauti/beginner_tutorials.git
+cd beginner_tutorials
+cp cpp_pubsub ~/path/to/workspace
 ```
 1. Copy the package `cpp_pubsub` to the `src` folder of your existing ROS2 workspace or create a new workspace using:
 ```zsh
 mkdir -p test_ws/src
 cd test_ws/src
-svn TODO_Link
+# copy the cpp_pubsub folder here  
 cd ../../
 colcon build --select-packages cpp_pubsub
 ```
