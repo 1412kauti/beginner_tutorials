@@ -1,34 +1,27 @@
 cmake_minimum_required(VERSION 3.8)
-project(cpp_pubsub)
+project(cpp_srvcli)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# Specify C++ standard
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(std_msgs REQUIRED)
+# find_package(example_interfaces REQUIRED)
 find_package(tutorial_interfaces REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
 
-add_executable(talker src/publisher_member_function.cpp)
-# ament_target_dependencies(talker rclcpp std_msgs)
-ament_target_dependencies(talker rclcpp tutorial_interfaces) 
-add_executable(listener src/subscriber_member_function.cpp)
-ament_target_dependencies(listener rclcpp tutorial_interfaces)
-# ament_target_dependencies(listener rclcpp std_msgs)
+add_executable(server2 src/add_two_ints_server.cpp)
+ament_target_dependencies(server2 rclcpp tutorial_interfaces)
 
-install(TARGETS
-  talker
-  listener
-  DESTINATION lib/${PROJECT_NAME})
+add_executable(client2 src/add_two_ints_client.cpp)
+ament_target_dependencies(client2 rclcpp tutorial_interfaces)
+
+add_executable(server3 src/add_three_ints_server.cpp)
+ament_target_dependencies(server3 rclcpp tutorial_interfaces)
+
+add_executable(client3 src/add_three_ints_client.cpp)
+ament_target_dependencies(client3 rclcpp tutorial_interfaces)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -41,5 +34,12 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+install(TARGETS
+    server2
+    client2
+    server3
+    client3
+  DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
