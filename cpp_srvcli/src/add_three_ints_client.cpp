@@ -1,3 +1,14 @@
+/**
+ * @file add_three_ints_client.cpp
+ * @author Kautilya Reddy Chappidi
+ * @brief ROS2 Node with a minimal client that calls a service.
+ * @version 0.1
+ * @date 2023-11-25
+ *
+ * @copyright Copyright (c) 2023
+ *
+ */
+
 #include "rclcpp/rclcpp.hpp"
 #include "tutorial_interfaces/srv/add_three_ints.hpp"
 
@@ -7,6 +18,17 @@
 
 using namespace std::chrono_literals;
 
+/**
+ * @brief Main function of the add_three_ints_client node.
+ *
+ * This function initializes the ROS 2 node, creates a client to the "add_three_ints" service,
+ * sends a request to the service with three integer arguments, waits for the response,
+ * and prints the sum of the three integers if the service call is successful.
+ *
+ * @param argc The number of command-line arguments.
+ * @param argv An array of command-line arguments.
+ * @return 0 if the program exits successfully, 1 otherwise.
+ */
 int main(int argc, char **argv)
 {
   rclcpp::init(argc, argv);
