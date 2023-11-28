@@ -12,30 +12,60 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <rclcpp/rclcpp.hpp>
-#include <std_msgs/msg/string.hpp>
+/**
+ * @file publisher_member_function.cpp
+ * @author Kautilya Reddy Chappidi
+ * @brief ROS2 Node with a minimal publisher using member function callbacks.
+ * @version 0.1
+ * @date 2023-11-25
+ *
+ * @copyright Copyright (c) 2023
+ *
+ */
 
-class MinimalPublisher : public rclcpp::Node {
- public:
-  MinimalPublisher() : Node("minimal_publisher") {
-    publisher_ = this->create_publisher<std_msgs::msg::String>("chatter", 10);
+#include <chrono>
+#include <memory>
+#include "rclcpp/rclcpp.hpp"
+#include "tutorial_interfaces/msg/num.hpp"                                           
 
-    auto publish_message = [this]() -> void {
-      auto message = std_msgs::msg::String();
-      message.data = "Hello, Turtlesquad!";
-      RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
-      publisher_->publish(message);
-    };
+using namespace std::chrono_literals;
 
-    timer_ = this->create_wall_timer(std::chrono::seconds(1), publish_message);
+/**
+ * @brief A minimal publisher class that publishes messages of type tutorial_interfaces::msg::Num.
+ */
+class MinimalPublisher : public rclcpp::Node
+{
+public:
+  /**
+   * @brief Constructor for the MinimalPublisher class.
+   */
+  MinimalPublisher()
+  : Node("minimal_publisher"), count_(0)
+  {
+    publisher_ = this->create_publisher<tutorial_interfaces::msg::Num>("topic", 10); 
+    timer_ = this->create_wall_timer(
+      500ms, std::bind(&MinimalPublisher::timer_callback, this));
   }
 
- private:
-  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+private:
+  /**
+   * @brief Timer callback function that publishes a message with an incrementing count.
+   */
+  void timer_callback()
+  {
+    auto message = tutorial_interfaces::msg::Num();                                  
+    message.num = this->count_++;                                                    
+    RCLCPP_INFO_STREAM(this->get_logger(), "Publishing: '" << message.num << "'");   
+    publisher_->publish(message);
+  }
+
   rclcpp::TimerBase::SharedPtr timer_;
+  rclcpp::Publisher<tutorial_interfaces::msg::Num>::SharedPtr publisher_;            
+  size_t count_;
 };
 
-int main(int argc, char *argv[]) {
+int main(int argc, char * argv[])
+{
   rclcpp::init(argc, argv);
   rclcpp::spin(std::make_shared<MinimalPublisher>());
   rclcpp::shutdown();

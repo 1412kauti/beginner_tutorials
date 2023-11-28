@@ -12,23 +12,53 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <rclcpp/rclcpp.hpp>
-#include <std_msgs/msg/string.hpp>
+/**
+ * @file subscriber_member_function.cpp
+ * @author Kautilya Reddy Chappidi
+ * @brief ROS2 Node with a minimal subscriber using member function callbacks.
+ * @version 0.1
+ * @date 2023-11-25
+ *
+ * @copyright Copyright (c) 2023
+ *
+ */
+#include <functional>
+#include <memory>
+#include "rclcpp/rclcpp.hpp"
+#include "tutorial_interfaces/msg/num.hpp"                                       
 
-class MinimalSubscriber : public rclcpp::Node {
- public:
-  MinimalSubscriber() : Node("minimal_subscriber") {
-    subscription_ = this->create_subscription<std_msgs::msg::String>(
-        "chatter", 10, [this](const std_msgs::msg::String::SharedPtr msg) {
-          RCLCPP_INFO(this->get_logger(), "Received: '%s'", msg->data.c_str());
-        });
+using std::placeholders::_1;
+
+/**
+ * @brief A minimal subscriber class that subscribes to a topic and handles incoming messages.
+ */
+class MinimalSubscriber : public rclcpp::Node
+{
+public:
+  /**
+   * @brief Constructor for the MinimalSubscriber class.
+   */
+  MinimalSubscriber()
+  : Node("minimal_subscriber")
+  {
+    subscription_ = this->create_subscription<tutorial_interfaces::msg::Num>(    
+      "topic", 10, std::bind(&MinimalSubscriber::topic_callback, this, _1));
   }
 
- private:
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
+private:
+  /**
+   * @brief Callback function for handling incoming messages.
+   * @param msg The incoming message.
+   */
+  void topic_callback(const tutorial_interfaces::msg::Num & msg) const  
+  {
+    RCLCPP_INFO_STREAM(this->get_logger(), "I heard: '" << msg.num << "'");     
+  }
+  rclcpp::Subscription<tutorial_interfaces::msg::Num>::SharedPtr subscription_;  
 };
 
-int main(int argc, char *argv[]) {
+int main(int argc, char * argv[])
+{
   rclcpp::init(argc, argv);
   rclcpp::spin(std::make_shared<MinimalSubscriber>());
   rclcpp::shutdown();
