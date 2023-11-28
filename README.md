@@ -1,66 +1,110 @@
-# ROS 2 Publisher-Subscriber Package (C++)
-
-This ROS 2 package demonstrates a simple publisher-subscriber application using C++.
-
-## Overview
-
-This package contains two nodes:
-
-1. **Publisher Node**: Publishes a "Hello, Turtlesquad! message to the "chatter" topic at a fixed rate.
-2. **Subscriber Node**: Subscribes to the "chatter" topic and prints received messages to the console.
+# Week2
+This ROS2 package demonstrates the use of Services
+## Overview:
+This repository consists of four packages:
+1. **cpp_pubsub**: 
+	a. **Publisher Node**: Publishes an Integer ato the "chatter" topic at a fixed rate
+	b. **Subscriber Node**: Subscribes to the "chatter" topic and prints the recieved message to the console.
+2. **tutorial_interfaces**:
+	a. 1. **Num.msg**: A custom message of type `int64`
+		2. **Sphere.msg**: A custom message of type `float64`
+	b. 1. **AddThreeInts.srv**: A custom service to add three discrete Integers of type `int64`
+		2. **AddTwoInts.srv**: A custom service to add two discrete Integeres of type `int64`
+3. **cpp_srvcli**:
+	a. **Three Integers Server**: A Service server to add Three Integers
+	b. **Three Integers Client**: A Service Client to add Three Integers
+	c. **Two Integers Server**: A Service server to add Two Integers
+	d. **Two Integers Client**: A Service server to add Two Integers
+4. **cpp_parameters**:
+	a. **Parameters Node**: A Publisher that would publish any message that was provided as a parameter 
 
 ## Build
+To build all the packages, follow the steps:
 
-To build the package, follow these steps:
-
-0. Install a few dependencies and clone the repository
-```
-apt install cppcheck
+```zsh
+sudo apt install cppcheck cpplint
+cd </path/to/ros2_workspace>
+cd src/
 git clone https://github.com/1412kauti/beginner_tutorials.git
-cd beginner_tutorials
-cp cpp_pubsub ~/path/to/workspace
-```
-1. Copy the package `cpp_pubsub` to the `src` folder of your existing ROS2 workspace or create a new workspace using:
-```zsh
-mkdir -p test_ws/src
-cd test_ws/src
-# copy the cpp_pubsub folder here  
-cd ../../
-colcon build --select-packages cpp_pubsub
-```
-2. Install Dependencies if any:
-```zsh
-rosdep install -i --from-path src --rosdistro humble -y   
+cd ..
+rosdep install -i --from-path src --rosdistro humble -y
+colcon build
+source install/setup.zsh # setup.bash or setup.sh 
 ```
 
-4. Source the workspace depending on the workspace:
+## Run
+### Service to Run Two Integers:
+
+Terminal 1:
 ```zsh
-source install/setup.bash #(bash)
-source install/setup.zsh #(zsh)
+cd </path/to/ros2_workspace>
+source install/setup.zsh # setup.bash or setup.sh 
+ros2 run cpp_srvcli server2
 ```
 
-5. Run the publisher and subscriber
-
-In Terminal 1:
+Terminal 2:
 ```zsh
-cd ~/path/to/test_ws
-source install/setup.zsh #Follow step 4 
+cd </path/to/ros2_workspace>
+source install/setup.zsh # setup.bash or setup.sh 
+ros2 run cpp_srvcli client2
+```
+
+### Service to Run Three Integers:
+
+Terminal 1:
+```zsh
+cd </path/to/ros2_workspace>
+source install/setup.zsh # setup.bash or setup.sh 
+ros2 run cpp_srvcli server3
+```
+
+Terminal 2:
+```zsh
+cd </path/to/ros2_workspace>
+source install/setup.zsh # setup.bash or setup.sh 
+ros2 run cpp_srvcli client3
+```
+
+### Custom Messages
+
+Terminal 1:
+```zsh
+cd </path/to/ros2_workspace>
+source install/setup.zsh # setup.bash or setup.sh 
 ros2 run cpp_pubsub talker
 ```
 
-In Terminal 2:
+Terminal 2:
 ```zsh
-cd ~/path/to/test_ws
-source install/setup.zsh #Follow step 4 
+cd </path/to/ros2_workspace>
+source install/setup.zsh # setup.bash or setup.sh 
 ros2 run cpp_pubsub listener
 ```
-## Linting
-1. cpplint
-```sh
-find src/ -name "*.cpp" -o -name "*.h" | xargs cpplint 2>&1 | tee cpplint_output.txt
+
+### Parameters
+
+Terminal 1:
+```zsh
+cd </path/to/ros2_workspace>
+source install/setup.zsh # setup.bash or setup.sh
+ros2 run cpp_parameters minimal_param_node
 ```
 
-2. cppcheck
-```sh
-cppcheck --enable=all --std=c++17 --suppress=missingIncludeSystem src/ >> cppcheck_out.txt
+Terminal 2:
+```zsh
+cd </path/to/ros2_workspace>
+source install/setup.zsh # setup.bash or setup.sh
+ros2 param set /minimal_param_node my_parameter <custom_Message>
+```
+## Linting
+
+```zsh
+chmod +x automation_scripts/cpplint_script.sh
+./automation_scripts/cpplint_script.sh
+```
+
+## CPPCheck
+```zsh
+chmod +x automation_scripts/cppcheck_script.sh
+./automation_scripts/cppcheck_script.sh
 ```
