@@ -2,7 +2,7 @@
  * @file add_two_ints_server.cpp
  * @author Kautilya Reddy Chappidi
  * @brief ROS2 Node with a minimal server that provides a service.
- * @version 0.1
+ * @version 0.2
  * @date 2023-11-25
  *
  * @copyright Copyright (c) 2023
@@ -11,7 +11,6 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "tutorial_interfaces/srv/add_two_ints.hpp"
-
 #include <memory>
 
 /**

@@ -2,7 +2,7 @@
  * @file add_two_ints_client.cpp
  * @author Kautilya Reddy Chappidi
  * @brief ROS2 Node with a minimal client that calls a service.
- * @version 0.1
+ * @version 0.2
  * @date 2023-11-25
  *
  * @copyright Copyright (c) 2023
@@ -11,13 +11,23 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "tutorial_interfaces/srv/add_two_ints.hpp"
-
 #include <chrono>
 #include <cstdlib>
 #include <memory>
 
 using namespace std::chrono_literals;
 
+/**
+ * @brief The main function of the add_two_ints_client program.
+ *
+ * This function initializes the ROS 2 node, creates a client to the "add_two_ints" service,
+ * sends a request to the service with two integers provided as command-line arguments,
+ * waits for the service to become available, and then prints the sum received in the response.
+ *
+ * @param argc The number of command-line arguments.
+ * @param argv An array of command-line argument strings.
+ * @return int The exit status of the program.
+ */
 int main(int argc, char **argv)
 {
   rclcpp::init(argc, argv);
