@@ -7,7 +7,7 @@ master_output="master_cpplint_out.txt"
 cd ..
 
 # Loop through each package and run cpplint
-for package in cpp_parameters cpp_pubsub cpp_srvcli tutorial_interfaces
+for package in cpp_parameters cpp_pubsub cpp_srvcli tutorial_interfaces tf2_test
 do
     echo "Running cpplint for $package..."
     cpplint --recursive $package/src/ >> $package/cpplint_out.txt

@@ -6,7 +6,7 @@ master_output="master_cpp_check_out.txt"
 cd ..
 
 # Loop through each package and run cppcheck
-for package in cpp_parameters cpp_pubsub cpp_srvcli tutorial_interfaces
+for package in cpp_parameters cpp_pubsub cpp_srvcli tutorial_interfaces tf2_test
 do
     echo "Running cppcheck for $package..."
     cppcheck --enable=all --std=c++17 --suppress=missingInclude $package/src/ >> $package/cppcheck_out.txt
